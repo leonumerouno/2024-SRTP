@@ -398,16 +398,16 @@ def generate_texts_for_sentences(input_text):
     else:
         result = seg(output)
         print(result)
-        items=[]
-        if ("/cc" in result or "、"in result) :
-            items = items.append(''.join(model_load(output).split()))
+        items = []
+        if ("/cc" in result or "、" in result):
+            items.append(''.join(output.split()))
             for value in items:
                 result = seg(value)
-                if "/cc" in result or "、"in result:
+                if "/cc" in result or "、" in result:
                     outputs.extend(binlie(value))
                 else:
                     outputs.append(value)
-        elif "/cc" in result or "、"in result:
+        elif "/cc" in result or "、" in result:
             outputs.extend(binlie(output))
         else:
             outputs.append(output)
