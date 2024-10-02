@@ -11,19 +11,19 @@ from tqdm import tqdm
 
 
 # 编辑次数权重
-W_h = 0.01
+W_h = 0.04
 # 编辑时间权重
 W_t = 0.01
 # 编辑人信息权重
-W_e = 0.98
+W_e = 0.95
 # 编辑人通过版本权重
-W_vp = 0.14
+W_vp = 0.18
 # 编辑人通过率权重
 W_pr = 0.09
 # 编辑人特色词条数权重
-W_fa = 0.01
+W_fa = 0.16
 # 编辑人已帮助人数权重
-W_hp = 0.76
+W_hp = 0.57
 
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
