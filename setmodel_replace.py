@@ -3,6 +3,11 @@ import torch
 import re
 from Levenshtein import ratio
 from transformers import BartForConditionalGeneration, BertTokenizer
+import os
+import json
+
+#json文件
+file_name="Sentences.json"
 
 #分词系统
 url = "http://localhost/SegAPI/rest/seg"
@@ -412,7 +417,23 @@ def generate_texts_for_sentences(input_text):
         else:
             outputs.append(output)
 
+    # 如果文件不存在，则创建一个空文件
+    if not os.path.exists(file_name):
+        with open(file_name, 'w', encoding='utf-8') as json_file:
+            json.dump([], json_file, ensure_ascii=False, indent=4)
+        print(f"文件 {file_name} 已创建并初始化为空列表。")
 
+    # 检查文件是否为空
+    if os.path.getsize(file_name) == 0:
+        existing_data = []
+    else:
+        with open(file_name, 'r', encoding='utf-8') as json_file:
+            existing_data = json.load(json_file)
+    new_data={"Input":input_text,"Output":outputs}
+    existing_data.append(new_data)
+    # 重新写入 JSON 文件
+    with open(file_name, 'w', encoding='utf-8') as json_file:
+        json.dump(existing_data, json_file, ensure_ascii=False, indent=4)
     print(f"替换后的输出{outputs}")
     return outputs
 
