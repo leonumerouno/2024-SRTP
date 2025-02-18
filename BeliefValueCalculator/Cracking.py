@@ -5,13 +5,39 @@ from Levenshtein import ratio
 from WordTear import WordTear
 
 class Cracking(object):
-
     def init(self):
-        self.model_path = "D:\my_finetuned_bart_model_2_for20"  # 模型所在的路径
+        self.model_path = "../train_model_20_7729_2598_large"  # 模型所在的路径
         self.tokenizer = BertTokenizer.from_pretrained(self.model_path)
         self.model = BartForConditionalGeneration.from_pretrained(self.model_path).to(
             "cuda" if torch.cuda.is_available() else "cpu")
         self.wordtear = WordTear()
+
+    def remove_citations(self,text):
+        citation_patterns = [
+            r'\[\d+\]',  # 匹配形如 [1], [2], ...
+            r'\(\d+\)',  # 匹配形如 (1), (2), ...
+        ]
+        for pattern in citation_patterns:
+            text = re.sub(pattern, '', text)
+        return text
+
+    def clean_title(self,title):
+        """清理标题，去除 '_百度百科' 及词条末尾的括号及其内容"""
+        title = title.replace('_百度百科', '').strip()
+        title = re.sub(r'[（\[].*?[）\]]$', '', title)
+        return title
+
+    def process_sentences(self,text, title):
+        """获取第一句并格式化为指定输出格式"""
+        #去除注释
+        cleaned_text = self.remove_citations(text)
+        #分句
+        sentences = re.split(r'(?<=[。！？])', cleaned_text)
+        real_sentences = []
+        for sentence in sentences:
+            sentence = sentence.strip()
+            real_sentences.append(f'Input: {title}, {sentence}' if sentence else '')
+        return real_sentences
 
     def calculate(self,name1, name2):
         similarity = ratio(name1, name2)
@@ -260,42 +286,48 @@ class Cracking(object):
                         pass
             return ''.join(output)
 
-    def generate_texts_for_sentences(self,input_text):
+    def generate_texts_for_sentences(self,input_text,title):
+        #首先对文本段进行处理
+        title = self.clean_title(title)
+        sentences = self.process_sentences(input_text,title)
+
         #先对output进行分割，再次裂解，处理并列宾语
         outputs = []
-        output = self.model_load(input_text, False)
-        if "||" in output:
-            for item in output.split("||"):
-                result = self.wordtear.tear(item)
-                if "," in item or "，" in item:  # 先进行再次裂解
-                    items = []
-                    items.append(''.join(self.model_load(item, True).split()))
+        for sentence in sentences:
+            if sentence == '':
+                continue
+            output = self.model_load(sentence, False)
+            if "||" in output:
+                for item in output.split("||"):
+                    result = self.wordtear.tear(item)
+                    if "," in item or "，" in item:  # 先进行再次裂解
+                        items = []
+                        items.append(''.join(self.model_load(item, True).split()))
+                        for value in items:
+                            result = self.wordtear.tear(value)
+                            if ("/cc" in result or "、" in result) and "与" not in result:  # 判断再次裂解后的句子是否有并列结构
+                                outputs.extend(self.binlie(value))
+                            else:
+                                outputs.append(value)
+                    elif "/cc" in result or "、" in result:  # 不再次裂解则判断是否有并列宾语
+                        outputs.extend(self.binlie(item))
+                    else:
+                        outputs.append(item)
+            else:
+                result = self.wordtear.tear(output)
+                items = []
+                if ("/cc" in result or "、" in result):
+                    items.append(''.join(output.split()))
                     for value in items:
                         result = self.wordtear.tear(value)
-                        if ("/cc" in result or "、" in result) and "与" not in result:  # 判断再次裂解后的句子是否有并列结构
+                        if "/cc" in result or "、" in result:
                             outputs.extend(self.binlie(value))
-
                         else:
                             outputs.append(value)
-                elif "/cc" in result or "、" in result:  # 不再次裂解则判断是否有并列宾语
-                    outputs.extend(self.binlie(item))
+                elif "/cc" in result or "、" in result:
+                    outputs.extend(self.binlie(output))
                 else:
-                    outputs.append(item)
-        else:
-            result = self.wordtear.tear(output)
-            items = []
-            if ("/cc" in result or "、" in result):
-                items = items.append(''.join(self.model_load(output).split()))
-                for value in items:
-                    result = self.wordtear.tear(value)
-                    if "/cc" in result or "、" in result:
-                        outputs.extend(self.binlie(value))
-                    else:
-                        outputs.append(value)
-            elif "/cc" in result or "、" in result:
-                outputs.extend(self.binlie(output))
-            else:
-                outputs.append(output)
-
+                    outputs.append(output)
+        print(outputs)
         return outputs
 

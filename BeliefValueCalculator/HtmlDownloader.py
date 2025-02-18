@@ -19,12 +19,14 @@ class HtmlDownloader(object):
         sleep(1)
 
         page_source = driver.page_source
+        title = driver.title
 
-        return page_source
+        return page_source,title
     def download_edit_history(self, url):
         options = Options()
         options.add_experimental_option('excludeSwitches', ['enable-automation'])
-        options.add_argument('--headless')
+        options.add_argument('--headless=old --no-sandbox')
+        options.add_argument("--log-level=INFO")
         s = Service('chromedriver.exe')
 
         driver = webdriver.Chrome(service=s, options=options)

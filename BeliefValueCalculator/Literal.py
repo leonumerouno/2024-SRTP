@@ -78,16 +78,21 @@ class Literal(object):
             return ""
 
     def date(self, seg):
-        date = self.wordtear.get_value('t', seg)
+        dates = self.wordtear.get_value('t', seg)
+        year = '0000'
+        month = '00'
+        day = '00'
         # 使用正则表达式匹配年、月、日
-        match = re.match(r'(?:(\d{4})年)?(?:(\d{1,2})月)?(?:(\d{1,2})日)?', date)
-
-        if not match:
-            return ""
-
-        year = match.group(1) if match.group(1) else '0000'
-        month = match.group(2).zfill(2) if match.group(2) else '00'
-        day = match.group(3).zfill(2) if match.group(3) else '00'
+        for date in dates:
+            match = re.match(r'(?:(\d{4})年)?(?:(\d{1,2})月)?(?:(\d{1,2})日)?', date)
+            if not match:
+                continue
+            if match.group(1):
+                year = match.group(1)
+            if match.group(2):
+                month = match.group(2).zfill(2)
+            if match.group(3):
+                day = match.group(3).zfill(2)
 
         return f"{year}-{month}-{day}"
 

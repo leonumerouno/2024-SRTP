@@ -38,12 +38,7 @@ class WordTear(object):
                 word, tag = split_word.split("/")
                 if tag == key:
                     word_list.append(word)
-        if len(word_list) == 1:
-            return word_list[0]
-        elif len(word_list) == 0:
-            return ""
-        else:
-            return word_list
+        return word_list
 
     def get_names(self,segstr):
         self.Param = {
@@ -60,7 +55,7 @@ class WordTear(object):
                 continue
             else:
                 split_word_type = split_word[1]
-                if 'n' in split_word_type and split_word_type != 'nnt':
+                if 'n' in split_word_type and split_word_type != 'nnt' and split_word_type != 'n' and split_word_type != 'nz' and split_word_type != 'ns' and split_word_type != 'ng':
                     entities.append(split_word[0])
         return entities
 

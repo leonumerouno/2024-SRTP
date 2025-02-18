@@ -6,14 +6,6 @@ from Cracking import Cracking
 from Calculator import Calculator
 from InitialBelief import InitialBelief
 
-#beliefvalue = a * cost1 + b * cost2
-#url -> beliefValue
-#url -> 爬虫 计算可信度初值所需要的数据 -> cost1
-#url -> 条目内容 -> 百科页面简介
-
-#百科页面简介 context
-#百科页面简介 -> 裂解 -> queries
-
 a = 0.5
 b = 0.5
 
@@ -28,15 +20,28 @@ initialbelief = InitialBelief()
 cracking.init()
 calculator.init()
 
-urls = ["https://baike.baidu.com/item/%E5%88%98%E5%BE%B7%E5%8D%8E/20869893"]
+f = open("url.txt","r")
 
+urls = []
+
+for line in f.readlines():
+    urls.append(line.split("\n")[0])
+
+cnt = 0
 for url in urls:
-    initial_beliefvalue = initialbelief.calculate(url)
+    cnt += 1
+    if cnt != 62:
+        continue
+    # todo:need record
+    # 计算初始可信度值
+    # initial_beliefvalue = initialbelief.calculate(url)
 
-    context = initialbelief.getContext(url)
+    context,title = initialbelief.getContext(url)
 
-    queries = cracking.generate_texts_for_sentences(context)
-    print(queries)
+    queries = cracking.generate_texts_for_sentences(context,title)
+
+    answer = 0.0
+    good_cnt = 0.0
 
     for i in range(0,len(queries)):
         #获取命题对应的实体
@@ -45,15 +50,17 @@ for url in urls:
 
         query = queries[i]
 
+        print(query)
         names = wordtear.get_names(query)
+        print(names)
 
-        answer = 0.0
-
+        real_names = []
         for name in names:
             # 从元命题库中获得所有同名的实体
             propositions = dbquery.select_from_knowledge_people_by_name_like(name)
             proposition_dict = entitylink.propositions_divide(propositions)
             entities = entitylink.get_entities(propositions)
+            # print("Entities In List:" + str(entities))
 
             #对上下文进行拆分
             context_point = wordtear.tear_context(context)
@@ -71,24 +78,50 @@ for url in urls:
                     res = ans
                     ecs = entity_name
 
+            # print(ecs)
+
             linked_propositions = dbquery.select_from_knowledge_people_by_uuid(ecs)
             name = dbquery.select_name_from_knowledge_people_by_uuid(ecs)
 
             if len(name) != 0:
+                real_names.append(name[0]['value'])
                 name = name[0]['value']
             else:
-                name = ecs
+                real_names.append(ecs)
+                name = str(ecs)
 
             linked_sentences = topK.sentences_prepare(linked_propositions,name)
 
             real_sentence,best_score = topK.Sentencesimilarity(query,linked_sentences)
 
-            real_sentences.append(real_sentence)
-            best_scores.append(best_score)
+            for s in real_sentence:
+                real_sentences.append(s)
 
-        answer += calculator.calculate(input_str=query,match_sentence_list=real_sentences,sentence_point_list=best_scores)
+            if type(best_score) == int:
+                best_scores.append(best_score)
+            else:
+                for bs in best_score:
+                    best_scores.append(bs)
 
-    print(a * initial_beliefvalue + b * answer) # cost2
+        now_ans = calculator.calculate(input_str=query,match_sentence_list=real_sentences,sentence_point_list=best_scores)
+        if now_ans != -1:
+            answer += now_ans
+            good_cnt += 1
+
+    final_value = 0
+    belief_value = 0
+    if good_cnt == 0:
+        belief_value = 0
+        final_value = initial_beliefvalue * a
+    else:
+        belief_value = answer / good_cnt
+        final_value = answer / good_cnt * b + initial_beliefvalue * a
+    with open("calculate_result.txt","a") as f:
+        f.write("URL:" + url + "\n")
+        f.write("initial_value:" + str(initial_beliefvalue) + "\n")
+        f.write("context_value:" + str(belief_value) + "\n")
+        f.write("good_count:" + str(good_cnt) + "\n")
+        f.write("final_value:" + str(final_value) + "\n")
 
 
 

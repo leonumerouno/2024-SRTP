@@ -23,7 +23,7 @@ class SourceData(object):
 
 
     def get_entity_urls(self):
-        sql_query = "select id,url from knowledge.name_difnames where id > 2667 and id < 10000"
+        sql_query = "select id,url from knowledge.name_difnames where id > 3661 and id < 10000"
 
         cursor = self.conn.cursor(pymysql.cursors.DictCursor)
 

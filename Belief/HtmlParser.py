@@ -14,7 +14,7 @@ class HtmlParser(object):
         soup = BeautifulSoup(html_cont, 'lxml', from_encoding='utf-8')
 
         try:
-            cnt = soup.find_all("div",{'class':'description_wQiW_'})[0].text.split("：")[1].split("次")[0]
+            cnt = soup.find_all("div",{'class':'description_yxRex'})[0].text.split("：")[1].split("次")[0]
         except IndexError:
             return
 

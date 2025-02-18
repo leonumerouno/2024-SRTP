@@ -40,20 +40,20 @@ class TopK(object):
 
     def Sentencesimilarity(self,query,embeddings):
         if len(embeddings) == 0:
-            return "",0
+            return [""],[0]
         corpus_embeddings = self.embedder.encode(embeddings,convert_to_tensor=True)
         query_embedding = self.embedder.encode(query,convert_to_tensor=True)
         similarity_scores = util.cos_sim(query_embedding, corpus_embeddings)[0]
-        scores, indices = torch.topk(similarity_scores, k=1)
+        scores, indices = torch.topk(similarity_scores, k=2)
 
-        real_entity_sentence = ""
-        best_score = 0
+        real_entity_sentences = []
+        best_scores = []
 
         for score, idx in zip(scores, indices):
-            real_entity_sentence = embeddings[idx]
-            best_score = score
+            real_entity_sentences.append(embeddings[idx])
+            best_scores.append(score)
 
-        return real_entity_sentence,best_score
+        return real_entity_sentences,best_scores
 
 
     def WordSimilarity(self,word1,word2):

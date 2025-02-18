@@ -29,20 +29,30 @@ class Calculator(object):
             return None
 
     def calculate(self,input_str,match_sentence_list,sentence_point_list):
-        max_point = max(sentence_point_list)
+        #todo:1,0,uncalculated、
+        max_point = 1
+        if len(sentence_point_list) == 0:
+            return -1
+        else:
+            max_point = max(sentence_point_list)
         if max_point < 0.7:
-            return 0.0
+            print(max_point)
+            return -1
         else:
             # 第一步：将sentence_transformer的句子解析出来
             max_index = sentence_point_list.index(max_point)
+            print(max_index,match_sentence_list,sentence_point_list)
             match_sentence = match_sentence_list[max_index]
             subject, key, value = self.match_entity(match_sentence)
-            # print(f"识别到的key是: {key}; 识别到的value是: {value}")
+            print(f"识别到的key是: {key}; 识别到的value是: {value}")
 
             # 第二步：通过解析出来的句子的key来查找使用的函数
             print(key)
             func_name = self.key_to_function.get(key)
-            func = getattr(self.literal, func_name, None)
+            if func_name != None:
+                func = getattr(self.literal, func_name, None)
+            else:
+                return -1
 
             if func_name == "date":
                 # 第三步中"date"的特殊处理
@@ -86,9 +96,11 @@ class Calculator(object):
 
                 if result:
                     # print("True")
+                    print("a")
                     return 1.0
                 else:
-                    return -1.0
+                    print("b")
+                    return 0.0
                     # print("False")
 
             else:
@@ -100,5 +112,5 @@ class Calculator(object):
                     # print("TRUE")
                     return 1.0
                 else:
-                    return -1.0
+                    return 0.0
                     # print("FALSE")

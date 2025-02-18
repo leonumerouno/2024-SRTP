@@ -4,21 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b18d7676-9e5f-48b5-9f61-e1cae21b0343" name="Changes" comment="Version 1.3">
+    <list default="true" id="b18d7676-9e5f-48b5-9f61-e1cae21b0343" name="Changes" comment="Version 2">
+      <change afterPath="$PROJECT_DIR$/BeliefValueCalculator/calculate_result.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BeliefValueCalculator/url.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Belief/HtmlDownloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/Belief/HtmlDownloader.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Belief/HtmlParser.py" beforeDir="false" afterPath="$PROJECT_DIR$/Belief/HtmlParser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Belief/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Belief/Main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Belief/SourceData.py" beforeDir="false" afterPath="$PROJECT_DIR$/Belief/SourceData.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Belief/chromedriver.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Belief/chromedriver.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/2" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/Calculator.py" beforeDir="false" afterPath="$PROJECT_DIR$/BeliefValueCalculator/Calculator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/Cracking.py" beforeDir="false" afterPath="$PROJECT_DIR$/BeliefValueCalculator/Cracking.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/Dbquery.py" beforeDir="false" afterPath="$PROJECT_DIR$/BeliefValueCalculator/Dbquery.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/EntityLink.py" beforeDir="false" afterPath="$PROJECT_DIR$/BeliefValueCalculator/EntityLink.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/RealEntity.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/HtmlDownloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/BeliefValueCalculator/HtmlDownloader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/InitialBelief.py" beforeDir="false" afterPath="$PROJECT_DIR$/BeliefValueCalculator/InitialBelief.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/Literal.py" beforeDir="false" afterPath="$PROJECT_DIR$/BeliefValueCalculator/Literal.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/TopK.py" beforeDir="false" afterPath="$PROJECT_DIR$/BeliefValueCalculator/TopK.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/WordTear.py" beforeDir="false" afterPath="$PROJECT_DIR$/BeliefValueCalculator/WordTear.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/abc.txt" beforeDir="false" afterPath="$PROJECT_DIR$/BeliefValueCalculator/abc.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/context.txt" beforeDir="false" afterPath="$PROJECT_DIR$/BeliefValueCalculator/context.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/abc.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/chromedriver.exe" beforeDir="false" afterPath="$PROJECT_DIR$/BeliefValueCalculator/chromedriver.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/context.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/BeliefValueCalculator/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/BeliefValueCalculator/test.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -59,7 +62,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;system111&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Neo4jAndPy/BeliefValueCalculator&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/ElNum/Desktop/FAITH-main&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
@@ -71,11 +74,12 @@
       <recent name="D:\Neo4jAndPy\craw" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Neo4jAndPy\BeliefValueCalculator" />
       <recent name="D:\Neo4jAndPy\Belief" />
       <recent name="D:\Neo4jAndPy\craw" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.test">
+  <component name="RunManager" selected="Python.SpiderMain">
     <configuration name="Main (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="SRTP-2024" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -205,8 +209,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.test" />
         <item itemvalue="Python.Main" />
+        <item itemvalue="Python.test" />
         <item itemvalue="Python.WordTear" />
         <item itemvalue="Python.TopK" />
         <item itemvalue="Python.Main (1)" />
@@ -342,7 +346,31 @@
       <option name="project" value="LOCAL" />
       <updated>1722603564234</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Version 2">
+      <option name="closed" value="true" />
+      <created>1728489984029</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1728489984029</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Version 2">
+      <option name="closed" value="true" />
+      <created>1728489994480</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1728489994480</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Version 2">
+      <option name="closed" value="true" />
+      <created>1728490152311</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1728490152311</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -361,6 +389,7 @@
     <MESSAGE value="Version 1.1&#10;更正了三元组提取错误的情况" />
     <MESSAGE value="Version 1.2" />
     <MESSAGE value="Version 1.3" />
-    <option name="LAST_COMMIT_MESSAGE" value="Version 1.3" />
+    <MESSAGE value="Version 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Version 2" />
   </component>
 </project>

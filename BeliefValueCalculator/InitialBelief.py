@@ -15,19 +15,19 @@ from bs4 import BeautifulSoup
 class InitialBelief(object):
     def __init__(self):
         # 编辑次数权重
-        self.W_h = 0.04
+        self.W_h = 0.015
         # 编辑时间权重
         self.W_t = 0.01
         # 编辑人信息权重
-        self.W_e = 0.95
+        self.W_e = 0.975
         # 编辑人通过版本权重
-        self.W_vp = 0.18
+        self.W_vp = 0.1051
         # 编辑人通过率权重
-        self.W_pr = 0.09
+        self.W_pr = 0.7807
         # 编辑人特色词条数权重
-        self.W_fa = 0.16
+        self.W_fa = 0.0259
         # 编辑人已帮助人数权重
-        self.W_hp = 0.57
+        self.W_hp = 0.0883
         self.current_date = datetime.now()
         self.downloader = HtmlDownloader()
         warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -37,6 +37,8 @@ class InitialBelief(object):
         return daytime
 
     def mean_value_normalize(self,list):
+        if len(list) == 0:
+            return [0 for _ in list]
         min_val = min(list)
         max_val = max(list)
         if max_val == min_val:
@@ -109,7 +111,7 @@ class InitialBelief(object):
 
         for i in range(0,len(editor_urls)):
             edit_list = {}
-            edit_list['date'] = self.transform_daytime(edit_times[0])
+            edit_list['date'] = self.transform_daytime(edit_times[i])
             edit_list['editor'] = editor_urls[i]
             edit_history.append(edit_list)
 
@@ -190,29 +192,39 @@ class InitialBelief(object):
     def calculate(self,url):
         edit_history = self.get_edit_history(url)
 
-        time_score = sum(self.time_decay_score(edit['date'], self.current_date) for edit in edit_history) / len(edit_history)
-
-        editor_num = 0
+        time_score = 0.0
+        if(len(edit_history)) != 0:
+            time_score = sum(self.time_decay_score(edit['date'], self.current_date) for edit in edit_history) / len(edit_history)
+        else:
+            time_score = 0
 
         vp_list, pr_list, fa_list, hp_list = self.get_editors(edit_history)
 
         editor_sum_value,editor_sum = self.cal_editor(edit_history,vp_list, pr_list, fa_list, hp_list)
 
-        editor_score = editor_sum_value / editor_num
+        if editor_sum == 0:
+            return 0.0
+
+        editor_score = editor_sum_value / editor_sum
 
         content_stability_score = 1 / (1 + len(edit_history))
 
-        return content_stability_score * self.W_h + time_score * self.W_t + editor_score * self.W_e
+        value = content_stability_score * self.W_h + time_score * self.W_t + editor_score * self.W_e
+
+        f = open("initial_value.txt","a")
+
+        f.write(url + " Initial score = " + str(value) + "\n")
+
+        return value
 
     def getContext(self,url):
-        html_cont = self.downloader.download(url)
+        html_cont,title = self.downloader.download(url)
         soup = BeautifulSoup(html_cont, 'lxml', from_encoding='utf-8')
 
-        divs = soup.find_all("div", {'class': 'para_CxrxP summary_cI0pX MARK_MODULE'})
-
+        divs = soup.find_all("div", {'class': 'para_TPQgK summary_myo7c MARK_MODULE'})
         context = ""
 
         for div in divs:
             context += div.text
 
-        return context
+        return context,title
